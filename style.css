@@ -1,0 +1,49 @@
+*, *::after, *::before{
+  box-sizing: border-box;
+  overflow: hidden;
+}
+body {
+  margin: 0;
+  height: 100vh;
+
+}
+
+#wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  
+}
+#board {
+  /*--width:90;
+  width: calc(var(--width) * 1vw);*/
+  width: 90vw;
+  height: 60vh;
+  border: 3px solid black;
+
+}
+
+#player-ship{
+  --x: 50;
+  --y:10;
+  height: 4vh;
+  width: 10vh;
+  border: 3px solid black;
+  position: absolute;
+  top: calc(var(--x) * 1vh);
+  left: calc(var(--y) * 1vw);
+}
+
+.asteroid{
+  --x: 50;
+  --y:80;
+  height: 10vh;
+  width: 10vh;
+  border: 3px solid black;
+  border-radius: 50%;
+  top: calc(var(--x) * 1vh);
+  left: calc(var(--y) * 1vw);
+  position: absolute;
+}
+
