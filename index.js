@@ -6,4 +6,3 @@ let game = new Game()
 
 game.show()
 
-game.play()

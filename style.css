@@ -21,29 +21,38 @@ body {
   width: 90vw;
   height: 60vh;
   border: 3px solid black;
-
+  position: absolute;
+  overflow: hidden;
 }
 
 #player-ship{
   --x: 50;
   --y:10;
-  height: 4vh;
-  width: 10vh;
+  height: 2vh;
+  width: 4vh;
   border: 3px solid black;
-  position: absolute;
+  position: relative;
   top: calc(var(--x) * 1vh);
   left: calc(var(--y) * 1vw);
+  animation: 2s cubic-bezier(0,533.33,1,533.33);
+  transition: 0.25s;
+  transition-timing-function: cubic-bezier(0,0,.01,.99);
+
 }
 
 .asteroid{
-  --x: 50;
-  --y:80;
-  height: 10vh;
-  width: 10vh;
+  --x: 0;
+  --y:0;
+
+  --height: 0;
+  height: calc((var(--height) * 1vh));
+  width: calc(var(--height) * 1vh);
   border: 3px solid black;
   border-radius: 50%;
   top: calc(var(--x) * 1vh);
   left: calc(var(--y) * 1vw);
   position: absolute;
+  transform: translateY(-50%);
+  overflow: visible; ;
 }
 
