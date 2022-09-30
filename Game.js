@@ -1,11 +1,19 @@
 import Board from './Board.js'
 import Ship from './Ship.js'
 import Asteroid from './Asteroid.js'
-let SHIP_SPEED = .25
+
+const VH_UNIT = window.innerHeight / 100; 
+let SHIP_SPEED = .5
 let ASTEROIDS_SPEED = .05
+let GAME_SPEED = 3000 // avt cetait 1000
+
 
 const SHIP_HEIGHT = 5;
 const SHIP_WIDTH = 10;
+
+let RANDOM_ROTATION = Math.floor(Math.random() * 180)
+
+let ASTEROIDS_ROTATION = 1;
 
 
 export default class Game {
@@ -15,14 +23,19 @@ export default class Game {
     this.playerShip = new Ship(document.querySelector('#player-ship'))
     this.asteroidCount = 0;
     this.asteroids = []
-    setInterval(() => {
+    window.setInterval(() => {
       this.createAsteroid()
-    }, 300)
+      this.update();
+    }, GAME_SPEED - 0.1)
+
     setInterval(() => {
       this.moveAsteroids()
     }, 10)
 
+    
+   
     this.listen();
+
  
  
 
@@ -45,14 +58,16 @@ export default class Game {
     
   }
   createAsteroid() {
+    let randomNumber = (Math.random() * (0.1 - 0.02) + 0.02).toFixed(4)
     let randomHeight = Math.floor(Math.random() * 10) + 2;
     this.asteroidCount += 1
     
     let asteroid = document.createElement("div")
     asteroid.className += `asteroid id-${this.asteroidCount}`
+    
     this.board.boardElem.appendChild(asteroid)
     let asteroidDiv = this.board.boardElem.querySelector(`.asteroid.id-${this.asteroidCount}`)
-    let newAsteroid = new Asteroid(asteroidDiv, this.asteroidCount, randomHeight, this.asteroids)
+    let newAsteroid = new Asteroid(asteroidDiv, this.asteroidCount, randomHeight, this.asteroids, randomNumber, RANDOM_ROTATION)
     this.asteroids.push(newAsteroid)
    
     //return this.board.querySelectorAll('.asteroid').at(-1)
@@ -60,7 +75,58 @@ export default class Game {
 
   moveAsteroids() {
     this.asteroids.forEach((e) => {
-      e.y -= ASTEROIDS_SPEED
+      e.y -= e.randomNumber
+
+      
+      let res = e.asteroidElem.getBoundingClientRect()
+      let ship = this.playerShip.shipElem.getBoundingClientRect()
+
+      // that is not working .. !
+      if ((res.x  < ship.x - e.asteroidElem.height&& res.y < ship.y - e.asteroidElem.height)||
+        (res.x  > ship.x + e.asteroidElem.height&& res.y > ship.y + e.asteroidElem.height ))  {
+          console.log('================================')
+          console.log('Alert collision !')
+          console.log('================================')
+        
+        }
+
+      // also rotating them since they are not circles anymore
+      //e.asteroidElem.style.setProperty('transform', `rotate(${e.rotation}deg)`)
+      //e.rotation+= 1
+    })
+  }
+
+
+  update() {
+    // removing all elements that went out of screen
+    this.asteroids.forEach((e) => {
+      if (e.y < -20) {
+        e.asteroidElem.remove()
+      }
+
+      /*
+      if ((res.top < ship.top || res.bottom > ship.bottom && res.left > ship.left || res.right > ship.right) &&
+        (res.top > ship.top || res.bottom > ship.bottom && res.left > ship.left || res.right > ship.right)){
+        console.log('================================')
+        console.log('Alert collision !')
+        console.log('================================')
+      }
+      */
+
+      // en assumant que 80vh & 5vh
+      /*
+      x = 80
+      height = 5
+      range = 75 - 85
+      y = 50 
+      height = 5
+      range2 = 45 - 55
+      si ship est < 85 && ship > 75
+      alors x est triggered
+      */
+
+
+   
     })
   }
 
@@ -87,15 +153,10 @@ export default class Game {
     let keys = {}
 
     document.addEventListener('keydown', (e) => {
+      e.preventDefault()
       keys[e.key] = true
       let ship = this.playerShip.shipElem.getBoundingClientRect()
       let board = this.board.boardElem.getBoundingClientRect()
-
-      console.log()
-
-      console.log(ship.top)
-      console.log(board.right)
-      console.log(ship.right)
 
       if (ship.bottom > board.bottom) {
         this.playerShip.x = 60-SHIP_HEIGHT;
@@ -109,30 +170,23 @@ export default class Game {
       if (ship.left < board.left) {
         this.playerShip.y = 0;
       }
-     
-      console.log(this.playerShip.x)
-      console.log(this.playerShip.y)
 
         // filtering both one case & dual cases key
-      if (keys['ArrowDown'] && ship.bottom < board.bottom) {
-        console.log('pressing arrowdown continiously')
+      if (keys['ArrowDown'] && ship.bottom < board.bottom) 
         this.playerShip.x += SHIP_SPEED
-      }
-        if (keys['ArrowUp'] && ship.top > board.top )
-          this.playerShip.x -= SHIP_SPEED
-        if (keys['ArrowRight'] && ship.right < board.right )
-          this.playerShip.y += SHIP_SPEED
-        if (keys['ArrowLeft']  && ship.left > board.left )
-          this.playerShip.y -= SHIP_SPEED
+      if (keys['ArrowUp'] && ship.top > board.top )
+        this.playerShip.x -= SHIP_SPEED
+      if (keys['ArrowRight'] && ship.right < board.right )
+        this.playerShip.y += SHIP_SPEED
+      if (keys['ArrowLeft']  && ship.left > board.left )
+        this.playerShip.y -= SHIP_SPEED
     })
     
     window.addEventListener('keyup', (e) => {
       // tres simple, on reset chaque touche(s) utilisée(s) plus haut
       keys[e.key] = false;
      });
-    
 
-    
   }
 
   show() {

@@ -1,14 +1,12 @@
 export default class Asteroid {
-  constructor(asteroidElem, index, height, asteroids) {
+  constructor(asteroidElem, index, height, asteroids, randomNumber, RANDOM_ROTATION) {
     this.asteroidElem = asteroidElem;
     this.index = index;
     this.height = height;
+    this.randomNumber = randomNumber;
     this.asteroids = asteroids;
+    this.rotation = RANDOM_ROTATION;
     this.initialize()
-
-
-    this.x2 = 85;
-
 
   }
   show() {
@@ -36,31 +34,22 @@ export default class Asteroid {
     return this.asteroidElem.style.setProperty('--y', value)
   }
 
-  initialize(array) {
-    let randomNumber = Math.floor(Math.random() * 50);
+  initialize() {
+    let randomNumber = Math.floor(Math.random() * 54) +3;
     // setting random size ( height )
 
-  
+    //if (e.x >= randomNumber + 10 && e.x <= randomNumber - 10) {
 
+    //console.log(randomNumber)
+    //console.log(this.asteroids[this.asteroids.length - 1])
 
-      //if (e.x >= randomNumber + 10 && e.x <= randomNumber - 10) {
-    console.log('========================')
-    console.log(randomNumber)
-    console.log(this.asteroids[this.asteroids.length - 1])
-    console.log('========================')
-    
-
-
-
-    if (this.asteroids.length < 2) {
+    //if (this.asteroids.length < 2) {
       this.asteroidElem.style.setProperty('--height', this.height)
       this.asteroidElem.style.setProperty('--y', 85)
       this.asteroidElem.style.setProperty('--x', randomNumber)
-    }else if ( (randomNumber  < this.asteroids[this.asteroids.length - 1].x+10)&&(randomNumber  > this.asteroids[this.asteroids.length - 1].x-10 )){
-        this.asteroidElem.style.setProperty('--height', this.height)
-          this.asteroidElem.style.setProperty('--y', 85)
-          this.asteroidElem.style.setProperty('--x', randomNumber)
-    }
+    //}else if ( (randomNumber  < this.asteroids[this.asteroids.length - 1].x+10)&&(randomNumber  > this.asteroids[this.asteroids.length - 1].x-10 )){
+  
+    //}
      // } 
     this.asteroids.forEach((e) => { 
       //console.log(`x ${ e.x }`)
@@ -68,6 +57,13 @@ export default class Asteroid {
       //console.log(this.asteroids[this.asteroids.length - 1])
     })
  
+  }
+
+  update() {
+    this.asteroids.forEach((e) => {
+      console.log(e.y)
+    })
+
   }
 
   startMoving() {

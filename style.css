@@ -30,13 +30,12 @@ body {
   --y:10;
   height: 2vh;
   width: 4vh;
-  border: 3px solid black;
+  border: 3px solid black; 
   position: relative;
   top: calc(var(--x) * 1vh);
   left: calc(var(--y) * 1vw);
-  animation: 2s cubic-bezier(0,533.33,1,533.33);
-  transition: 0.25s;
-  transition-timing-function: cubic-bezier(0,0,.01,.99);
+  transition: 3s cubic-bezier(0,.5,.49,.99);
+
 
 }
 
@@ -48,7 +47,7 @@ body {
   height: calc((var(--height) * 1vh));
   width: calc(var(--height) * 1vh);
   border: 3px solid black;
-  border-radius: 50%;
+
   top: calc(var(--x) * 1vh);
   left: calc(var(--y) * 1vw);
   position: absolute;
